@@ -10,17 +10,45 @@ user_data = {
 }
 
 def index(request):
-    return HttpResponse("Hello Geeks this is the app")
+    return render(request, 'my_template.html')
 
 def simple_response_view(request):
     return HttpResponse("This is a simple response.")
 
-def user_id (request, user_id):
+def Single_user (request, user_id):
     user = user_data.get(user_id) #get user data based on user_id
-    if user:
-        response = f"User ID: {user_id}<br>"
-        response += f"Name: {user['name']}<br>"
-        response += f"Email: {user['email']}"
-        return HttpResponse(response)
-    else:
-        return HttpResponse("User not found.")
+    
+    context = {
+        'user_id' : user_id,
+        'user_name' : user['name'],
+        'user_email': user['email'],
+    }
+    return render(request, 'my_template.html', context)
+    
+
+def multiple_users(request, user_ids):
+    user_ids_list = user_ids.split(',')
+    users=[]
+    for  user_ids_str in user_ids_list:
+        try:
+            user_id = int(user_ids_str)
+            user = user_data.get(user_id)
+            if user:
+                users.append({
+                    'user_id': user_id,
+                    'user_name': user['name'],
+                    'user_email': user['email'],
+                })
+            else:
+                users.append({
+                    'user_id': user_id,
+                    'error': 'User not found.',
+                })
+        except ValueError:
+            users.append({'error': f'Invalid user ID: {user_id_str}'})
+    context = {'users': users}
+    return render(request, 'my_template.html', context) 
+            
+        
+   
+    

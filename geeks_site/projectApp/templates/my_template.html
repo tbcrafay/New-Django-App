@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+</head>
+<body>
+    
+<h1>Hello World!</h1>
+<p>Welcome to my first Django App from Geeks for Geeks!</p>
+
+<h1>User details:</h1>
+
+    {% if user_id %}
+        <h3>User details for User ID: {{user_id}} </h3>
+        <p>Name: {{ user_name }}</p>
+        <p>Email: {{ user_email }}</p>
+    {% else %}
+        <p>User not found.</p>
+    {% endif %}
+
+
+{% if users|length > 1 %}
+    <h1>Multiple Users details:</h1>
+{% endif %}
+
+{% for user in users %}
+        {% if user.error %}
+            <p>{{ user.error }}</p>
+        {% else %}
+            <p>User ID: {{ user.user_id }}</p>
+            <p>Name: {{ user.user_name }}</p>
+            <p>Email: {{ user.user_email }}</p>
+        {% endif %}
+        <hr>
+    {% endfor %}
+
+</body>
+</html>
